@@ -1,6 +1,6 @@
 site:
-  name: AstroWind
-  site: 'https://astrowind.vercel.app'
+  name: CACS-UniKL
+  site: 'https://cacs-unikl.github.io/'
   base: '/'
   trailingSlash: false
 
@@ -9,16 +9,16 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: CACS-UniKL
+    template: '%s — CACS'
+  description: "\U0001F680 Universiti Kuala Lumpur ( UniKL ) - Center for Alumni & Career Services."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: CACS-UniKL
     images:
-      - url: '~/assets/images/default.png'
+      - url: '~/assets/images/metadata.png'
         width: 1200
         height: 628
     type: website
