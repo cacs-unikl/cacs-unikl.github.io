@@ -11,14 +11,14 @@ metadata:
   title:
     default: CACS-UniKL
     template: '%s — CACS'
-  description: "\U0001F680 Universiti Kuala Lumpur ( UniKL ) - Center for Alumni & Career Services."
+  description: "\U0001F393 Universiti Kuala Lumpur ( UniKL ) - Center for Alumni & Career Services."
   robots:
     index: true
     follow: true
   openGraph:
     site_name: CACS-UniKL
     images:
-      - url: '~/assets/images/metadata.png'
+      - url: '~/assets/images/default.png'
         width: 1200
         height: 628
     type: website
