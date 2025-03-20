@@ -1,0 +1,434 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: '2025 - UniKL Chairman Cup',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <body class="bg-gray-50">
+    <div class="px-4 pt-2 pb-8">
+      <h1 class="text-2xl md:text-3xl font-bold text-center py-4">UNIVERSITI KUALA LUMPUR</h1>
+      <h2 class="text-xl md:text-3xl font-semibold text-center mb-3"> IFTAR Ramadan 2025 - UniKL Alumni</h2>
+      <h2 class="text-lg md:text-xl text-center mb-2">21st March 2025 &nbsp; | &nbsp; 05:30 PM - 08:30 PM</h2>
+      <h2 class="text-lg md:text-xl text-center">UniKL Business School - Gurney Campus</h2>
+    </div>
+    <!-- <div class="px-5 flex justify-center">
+      <button class="refresh-btn bg-blue-700 hover:bg-blue-500 text-white text-xl tracking-wide font-semibold py-2 px-4 rounded m-5"
+        onclick="refreshAll()">
+        Refresh Data
+      </button>
+    </div> -->
+  
+    <!-- Card Grid (Existing Cards) -->
+    <div class="cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 px-10 py-0">
+      <div class="card bg-black border border-gray-200 rounded-lg shadow-lg p-5" data-label="Total Participants" data-cell="D2">
+        <h3 class="text-center text-xl font-semibold text-gray-100 mb-2">Total Participation</h3>
+        <div class="text-center card-value text-5xl md:text-5xl font-bold text-gray-100">...</div>
+      </div>
+      <div class="card bg-white border border-gray-200 rounded-lg shadow-lg p-5" data-label="UniKL Alumni" data-cell="E2">
+        <h3 class="text-center text-xl font-semibold text-gray-800 mb-2">UniKL Alumni</h3>
+        <div class="text-center card-value text-5xl md:text-5xl font-bold text-gray-900">...</div>
+      </div>
+      <div class="card bg-white border border-gray-200 rounded-lg shadow-lg p-5" data-label="Alumni (Above 35 years old.)" data-cell="F2">
+        <h3 class="text-center text-xl font-semibold text-gray-800 mb-2">Spouse / Friend</h3>
+        <div class="text-center card-value text-5xl md:text-5xl  text-gray-900">...</div>
+      </div>
+      <div class="card bg-white border border-gray-200 rounded-lg shadow-lg p-5" data-label="Alumni (Below 35 years old.)" data-cell="G2">
+        <h3 class="text-center text-xl font-semibold text-gray-800 mb-2">Children</h3>
+        <div class="text-center card-value text-5xl md:text-5xl  text-gray-900">...</div>
+      </div>
+    </div>
+  
+    <div class="p-4">
+      <h2 class="text-lg lg:text-2xl font-semibold text-center mt-5 mb-3">
+        Alumni Universiti Kuala Lumpur ( UniKL )
+      </h2>
+      <h2 id="filterHeading" class="text-2xl md:text-4xl font-bold text-center mb-2">UniKL ( All )</h2>
+    </div>
+  
+    <!-- Custom Dropdown Filter -->
+    <div class="p-2 flex justify-center">
+      <div class="relative inline-block text-left" id="customFilterDropdown">
+        <div>
+          <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-xl font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">
+            UniKL ( All )
+            <svg class="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+              <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white ring-1 shadow-lg ring-black/5 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" id="dropdownMenu">
+          <!-- Options will be populated dynamically -->
+        </div>
+      </div>
+    </div>
+  
+    <!-- SEARCH INPUT for Alumni Name Filtering -->
+    <div class="p-2 flex justify-center">
+      <div class="col-span-12">
+          <div class="mt-2">
+            <div class="flex items-center bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 w-80">
+              <input
+                type="text"
+                name="searchInput"
+                id="searchInput"
+                class="block min-w-0 grow py-1.5 pr-3 pl-1 text-lg text-gray-900 placeholder:text-gray-400 text-center focus:outline-none"
+                placeholder="Enter participant name to search."
+              />
+            </div>
+          </div>
+        </div>
+     </div>
+    
+    <!-- Image Cards Grid -->
+    <div id="imageCardsContainer" class="image-cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-12 py-6">
+      <!-- Image cards will be inserted here dynamically -->
+    </div>
+    
+  </body>
+</Layout>
+
+<script>
+  // Externalized configuration
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxNzI2OR61xb_O4y1u3hcfZ5gVVOcTCqh_hifAYs9CVehTmhAvVzlMxCQ2tRayRajCAQ/exec';
+  const SPREADSHEET_ID = '1jDnYydyHdQ-2C8llt70h39ueYwPe0muZfsXidop2hvk';
+  const SHEET_NAME = 'IFTAR Invitation';
+
+  const CARD_CACHE_KEY = 'cardCache';
+  const IMAGE_CARD_CACHE_KEY = 'imageCardCache';
+  const CACHE_TTL = 0.5 * 60 * 1000; // 30 seconds
+
+  // Updated range: fetch columns B and K (B: group, K: image URL) from row 6 to row 247
+  const IMAGE_CARDS_RANGE = 'A7:F247';
+
+  // Card grid variables (Existing Cards)
+  const cards = document.querySelectorAll('.card');
+  const CELL_CONFIG = Array.from(cards).map(card => ({
+    element: card,
+    // label: (card as HTMLElement).dataset.label,
+    // cell: (card as HTMLElement).dataset.cell
+    label: card.dataset.label,
+    cell: card.dataset.cell
+  }));
+
+  // Global variables for image cards data, current filter, and search query
+  // let imageCardsData: { group: string; jersey_no: string; name: string; downloadUrl: string; year_convo: string; age: string; imageUrl: string; }[] = [];
+  let imageCardsData = [];
+  let currentFilter = 'UniKL ( All )';
+  let searchQuery = "";
+
+  // Combined refresh function (including image cards)
+  async function refreshAll() {
+    await fetchCardData();
+    await fetchImageCardsData();
+  }
+
+  // Card data functions (Existing Cards)
+  async function fetchCardData() {
+    showCardLoadingState();
+
+    const cachedData = getCachedData(CARD_CACHE_KEY);
+    if (cachedData) {
+      updateCards(cachedData);
+      return;
+    }
+
+    try {
+      const cellsParam = CELL_CONFIG.map(c => c.cell).join(',');
+      const url = `${SCRIPT_URL}?cells=${cellsParam}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${SHEET_NAME}`;
+      const response = await fetch(url);
+      const json = await response.json();
+      const { data } = json;
+
+      localStorage.setItem(CARD_CACHE_KEY, JSON.stringify({
+        timestamp: Date.now(),
+        data: data
+      }));
+
+      updateCards(data);
+    } catch (error) {
+      showCardErrorState();
+      console.error('Card fetch error:', error);
+    }
+  }
+
+  function updateCards(data) {
+    CELL_CONFIG.forEach((config, index) => {
+      const card = config.element;
+      const value = data[index]?.value || 'N/A';
+      const cardValueElem = card.querySelector('.card-value');
+
+      if (typeof value === 'string' && isImageUrl(value)) {
+        if (cardValueElem) {
+          cardValueElem.innerHTML = `<img src="${convertToDirectUrl(value)}" alt="${config.label}" class="h-32 w-auto object-cover rounded" />`;
+        }
+      } else {
+        if (cardValueElem) {
+          cardValueElem.textContent = value;
+        }
+      }
+
+      // if (typeof value === 'string' && isImageUrl(value)) {
+      //   cardValueElem.innerHTML = `<img src="${convertToDirectUrl(value)}" alt="${config.label}" class="h-32 w-auto object-cover rounded" />`;
+      // } else {
+      //   cardValueElem.textContent = value;
+      // }
+    });
+  }
+
+  // function showCardLoadingState() {
+  //   CELL_CONFIG.forEach(config => {
+  //     const cardValueElem = config.element.querySelector('.card-value');
+  //     if (cardValueElem) {
+  //       cardValueElem.textContent = 'Loading...';
+  //     }
+  //   });
+  // }
+
+  // function showCardErrorState() {
+  //   CELL_CONFIG.forEach(config => {
+  //     const cardValueElem = config.element.querySelector('.card-value');
+  //     if (cardValueElem) {
+  //       cardValueElem.textContent = 'Error';
+  //     }
+  //   });
+  // }
+
+  function showCardLoadingState() {
+    CELL_CONFIG.forEach(config => {
+      config.element.querySelector('.card-value').textContent = 'Loading...';
+    });
+  }
+
+  function showCardErrorState() {
+    CELL_CONFIG.forEach(config => {
+      config.element.querySelector('.card-value').textContent = 'Error';
+    });
+  }
+
+  // New Image Cards functions
+  async function fetchImageCardsData() {
+    try {
+      const cached = getCachedData(IMAGE_CARD_CACHE_KEY);
+      if (cached) {
+        processImageCardsData(cached);
+        return;
+      }
+
+      const url = `${SCRIPT_URL}?range=${IMAGE_CARDS_RANGE}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${SHEET_NAME}`;
+      const response = await fetch(url);
+      const json = await response.json();
+      const { data } = json;  // expected to be a 2D array with columns B to K
+
+      localStorage.setItem(IMAGE_CARD_CACHE_KEY, JSON.stringify({
+        timestamp: Date.now(),
+        data: data
+      }));
+
+      processImageCardsData(data);
+    } catch (error) {
+      console.error('Image cards fetch error:', error);
+    }
+  }
+
+  function processJerseyNo(value) {
+    if (value === undefined || value === null) {
+      return '';
+    }
+    const temp = String(value).trim();
+    if (temp === '' || temp === '-') {
+      return '';
+    }
+    if (/^\d+$/.test(temp)) {
+      return temp;
+    }
+    return temp;
+  }
+
+  function processYearConvo(value) {
+    if (value === undefined || value === null) {
+      return '';
+    }
+    const temp = String(value).trim();
+    if (temp === '' || temp === '-') {
+      return '';
+    }
+    if (/^\d+$/.test(temp)) {
+      return temp;
+    }
+    return temp;
+  }
+
+  function processAge(value) {
+    if (value === undefined || value === null) {
+      return '';
+    }
+    const temp = String(value).trim();
+    if (temp === '' || temp === '-') {
+      return '';
+    }
+    if (/^\d+$/.test(temp)) {
+      return temp;
+    }
+    return temp;
+  }
+
+  function processImageCardsData(data) {
+    // data is a 2D array where each row contains values from columns B to K.
+    // Index 0 = column B (group), Index 3 = column E (jersey no), Index 2 = column D (name), Index 4 = column F (ic no), Index 5 = column G (year convo), Index 9 = column K (image URL)
+    imageCardsData = data
+      .filter(row => row[1])
+      .map(row => ({
+        group: row[0] ? row[0].trim() : '',
+        name: row[1] ? row[1].trim() : '',
+        year_convo: processYearConvo(row[3]), 
+        imageUrl: row[5].trim()
+      }));
+
+    // Get unique groups from the data
+    const uniqueGroups = [...new Set(imageCardsData.map(card => card.group).filter(g => g))];
+
+    // Populate the custom dropdown with "UniKL ( All )" plus unique groups
+    populateFilterDropdown(uniqueGroups);
+
+    // Set default filter to UniKL ( All )
+    currentFilter = 'UniKL ( All )';
+    updateFilterHeading(currentFilter);
+    updateDropdownButton(currentFilter);
+
+    renderImageCards();
+  }
+
+  function populateFilterDropdown(groups) {
+    const options = ['UniKL ( All )', ...groups];
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    dropdownMenu.innerHTML = ''; // Clear previous options
+
+    options.forEach(option => {
+      const a = document.createElement('a');
+      a.href = "#";
+      a.className = "block px-4 py-2 text-xl text-gray-700 hover:bg-gray-100";
+      a.textContent = option;
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        currentFilter = option;
+        updateFilterHeading(option);
+        updateDropdownButton(option);
+        renderImageCards();
+        // Hide dropdown menu after selection
+        dropdownMenu.classList.add('hidden');
+      });
+      dropdownMenu.appendChild(a);
+    });
+
+    // Toggle dropdown menu on button click
+    const menuButton = document.getElementById('menu-button');
+    menuButton.addEventListener('click', function() {
+      dropdownMenu.classList.toggle('hidden');
+    });
+  }
+
+  function updateDropdownButton(text) {
+    const menuButton = document.getElementById('menu-button');
+    menuButton.innerHTML = text + `
+      <svg class="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+      </svg>
+    `;
+  }
+
+  function updateFilterHeading(filter) {
+    const heading = document.getElementById('filterHeading');
+    heading.textContent = filter;
+  }
+
+  // Search handler to update the searchQuery and re-render image cards
+  function handleSearch(event) {
+    searchQuery = event.target.value;
+    renderImageCards();
+  }
+
+  function renderImageCards() {
+    const container = document.getElementById('imageCardsContainer');
+    container.innerHTML = ''; // Clear previous content
+
+    // Filter by group first
+    let filteredCards = currentFilter === 'UniKL ( All )'
+      ? imageCardsData
+      : imageCardsData.filter(card => card.group === currentFilter);
+
+    // Then filter by search query (case-insensitive match on the alumni name)
+    if (searchQuery.trim() !== '') {
+      filteredCards = filteredCards.filter(card =>
+        card.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Render each matching card
+    filteredCards.forEach(cardData => {
+      const directUrl = convertToDirectUrl(cardData.imageUrl);
+      const card = document.createElement('div');
+      card.className = 'lg:py-2 lg:pl-4 flex flex-col items-center bg-white border border-gray-900 rounded-lg shadow-sm';
+      card.innerHTML = `
+        <img src="${directUrl}" alt="${cardData.group}" class="mt-4 object-cover rounded-t-lg w-full h-auto md:h-auto md:w-1/4" />
+        <div class="px-4 py-4 lg:py-0 leading-normal">
+            <h1 class="my-2 text-lg text-center font-semibold tracking-wide text-gray-900">
+                ${cardData.name}
+            </h1>
+            <h4 class="mb-2 text-2xl lg:text-lg text-center font-extrabold tracking-wide text-indigo-500 uppercase">
+                ${cardData.group} - <span>${cardData.year_convo}</span>
+            </h4>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // <img src="${directUrl}" alt="${cardData.group}" class="object-cover rounded-t-lg w-full h-auto md:h-auto md:w-1/4 md:rounded-lg" />
+    // If no cards match the filter, show a message
+    if (filteredCards.length === 0) {
+      const message = document.createElement('div');
+      message.className = 'text-center text-lg text-gray-600 py-4';
+      message.textContent = 'No matching alumni found.';
+      container.appendChild(message);
+    }
+  }
+
+  // Helper functions to check and convert image URLs (for Google Drive links)
+  function isImageUrl(url) {
+    return (typeof url === 'string' &&
+            (url.match(/\.(jpeg|jpg|gif|png)$/i) || url.includes('drive.google.com')));
+  }
+
+  function convertToDirectUrl(url) {
+    if (url.includes('drive.google.com')) {
+      const match = url.match(/\/d\/([^\/]+)\//);
+      if (match && match[1]) {
+        return `https://drive.google.com/thumbnail?id=${match[1]}`;
+      }
+    }
+    return url;
+  }
+
+  function getCachedData(key) {
+    const cached = localStorage.getItem(key);
+    if (!cached) return null;
+
+    const { timestamp, data } = JSON.parse(cached);
+    return (Date.now() - timestamp < CACHE_TTL) ? data : null;
+  }
+
+  // Ensure all DOM elements are loaded before attaching event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    // Attach the search input event listener
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', handleSearch);
+    }
+  
+    // Initial load of data
+    refreshAll();
+  });
+</script>
